@@ -1,18 +1,18 @@
 import { RxStomp, RxStompState } from '@stomp/rx-stomp';
 import { useEffect, useState } from 'react';
 
-export default function Status(rxStomp) {
+export default function Status(props) {
     const [connectionStatus, setConnectionStatus] = useState(null);
 
     useEffect(() => {
-        const subscriptionOb = rxStomp.rxStomp.connectionState$.subscribe((state) => {
+        const subscriptionOb = props.rxStomp.connectionState$.subscribe((state) => {
             setConnectionStatus(RxStompState[state]);
         
         });
 
         return () => {
             subscriptionOb.unsubscribe();
-        }
+        };
     }, []);
 
     return (
