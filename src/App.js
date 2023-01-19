@@ -1,22 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState } from 'react';
-import { RxStomp, RxStompState } from '@stomp/rx-stomp';
+import React, { useEffect, useState, useRef } from 'react';
+import { RxStomp } from '@stomp/rx-stomp';
+
 import Status from './components/Status';
 import Chatroom from './components/Chatroom';
 
-function App() {
-  const [rxStomp, _setRxStomp] = useState(new RxStomp()); // useref?
- 
+function App () {
+  const rxStompRef = useRef(new RxStomp());
+  const rxStomp = rxStompRef.current;
+
   const [joinedChatroom, setJoinedChatroom] = useState(false);
-  
 
   useEffect(() => {
     const rxStompConfig = {
       brokerURL: 'ws://localhost:15674/ws',
       connectHeaders: {
         login: 'guest',
-        passcode: 'guest',
+        passcode: 'guest'
       },
       debug: (msg) => {
         console.log(new Date(), msg);
@@ -24,14 +25,14 @@ function App() {
       heartbeatIncoming: 0,
       heartbeatOutgoing: 20000,
       reconnectDelay: 200
-    }
+    };
 
     rxStomp.configure(rxStompConfig);
     rxStomp.activate();
 
     return () => {
       rxStomp.deactivate();
-    }
+    };
   }, []);
 
   return (

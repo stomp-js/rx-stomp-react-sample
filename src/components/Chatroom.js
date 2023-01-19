@@ -1,31 +1,31 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-export default function Chatroom(props) {
-    const [message, setMessage] = useState('');
-    const [chatMessages, setChatMessages] = useState([]);
+export default function Chatroom (props) {
+  const [message, setMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
 
-    const [userName, setUserName] = useState(`user${Math.floor(Math.random() * 1000)}`);
+  const [userName, setUserName] = useState(`user${Math.floor(Math.random() * 1000)}`);
 
-    useEffect(() => {
-        console.log("rendering")
-        const subscription = props.rxStomp.watch('/topic/test').subscribe((message) => {
-            const messageBody = JSON.parse(message.body);
-            setChatMessages(chatMessages => [...chatMessages, messageBody]);
-        });
+  useEffect(() => {
+    console.log('rendering');
+    const subscription = props.rxStomp.watch('/topic/test').subscribe((message) => {
+      const messageBody = JSON.parse(message.body);
+      setChatMessages(chatMessages => [...chatMessages, messageBody]);
+    });
 
-        return () => {
-            console.log("tearing down");
-            subscription.unsubscribe();
-        };
-    }, []);
+    return () => {
+      console.log('tearing down');
+      subscription.unsubscribe();
+    };
+  }, []);
 
-    function sendMessage() {
-        const body = JSON.stringify({user: userName, message: message});
-        props.rxStomp.publish({destination: '/topic/test', body: body});
-        setMessage('');
-    }
-    
-    return (
+  function sendMessage () {
+    const body = JSON.stringify({ user: userName, message });
+    props.rxStomp.publish({ destination: '/topic/test', body });
+    setMessage('');
+  }
+
+  return (
         <>
             <h2>Chatroom</h2>
 
@@ -46,5 +46,5 @@ export default function Chatroom(props) {
             ))}
             </ul>
         </>
-    );
+  );
 }
