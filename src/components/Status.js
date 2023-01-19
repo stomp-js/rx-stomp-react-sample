@@ -1,7 +1,7 @@
-import { RxStompState } from '@stomp/rx-stomp';
-import React, { useEffect, useState } from 'react';
+import { RxStompState } from "@stomp/rx-stomp";
+import React, { useEffect, useState } from "react";
 
-export default function Status (props) {
+export default function Status(props) {
   const [connectionStatus, setConnectionStatus] = useState(null);
 
   useEffect(() => {
@@ -15,8 +15,8 @@ export default function Status (props) {
   }, []);
 
   return (
-        <div>
-            <h2>Connection Status: {connectionStatus} </h2>
-        </div>
+    <div>
+      <h2>Connection Status: {connectionStatus} </h2>
+    </div>
   );
 }
